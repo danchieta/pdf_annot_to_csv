@@ -1,9 +1,14 @@
 from PyPDF2 import PdfReader
 
-reader = PdfReader("tlosf_paper_20230118 - annotated.pdf")
-out = open("outfile.csv",'w')
+# Set the input and output files here
+input_filename = "tlosf_paper_20230118 - annotated.pdf"
+output_filename = "outfile.csv"
 
-out.write('\'Content\'; \'Type\';\'PageNum\' \n')
+# you shouldn't need to change anything below this line
+reader = PdfReader(input_filename )
+out = open(output_filename,'w')
+
+out.write('Content;Type;PageNum\n')
 pagenum = 1
 stypes = list()
 for page in reader.pages:
@@ -16,7 +21,8 @@ for page in reader.pages:
                 obj["/Subtype"] == "/FreeText" or \
                 obj["/Subtype"] == "/Caret":
                 content = obj["/Contents"].replace('\n',' ').replace('  ',' ')
-                s = "\'{}\';\'{}\';{} \n".format(content,obj["/Subtype"][1:],pagenum)
+
+                s = "{};{};{}\n".format(content,obj["/Subtype"][1:],pagenum)
                 print(s)
                 # annotation = {"page":pagenum, "subtype": obj["/Subtype"],"contents": obj["/Contents"]}
                 # print(annotation)
